@@ -1,22 +1,34 @@
 require('dotenv').config();
 const express = require('express');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const app = express();
 
-const port = process.env.PORT || 5000;
-// ========= middleWare =========//
-
+// ======== middleWare ========//
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:'http://localhost:3000',
-    credentials:true
-}));
+  origin:'http://localhost:3000',
+  credentials:true
+}))
 
-app.get('/', (req, res) => {
-    res.send('Server is Running')
-  })
+// ============ Configuration =========//
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET=process.env.JWT_SECRET;
+const REFRESH_SECRET=process.env.REFRESH_SECRET;
 
-app.listen(port,()=>console.log(`Server is running on port ${port}`))
+// ============= memory ============//
+let users =[];
+let refreshTokens=[];
+
+
+
+// ============ functions ========//
+app.get('/',async(req,res)=>{
+  res.send('JWT Server is Running!!');
+})
+
+
+app.listen(PORT,()=>console.log(`Server is Running on port ${PORT}`))
